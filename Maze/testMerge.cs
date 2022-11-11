@@ -8,8 +8,5 @@ namespace Maze
 {
     class testMerge
     {
-        public testMerge()
-        {
-        }
     }
 }
