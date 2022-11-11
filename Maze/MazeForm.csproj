@@ -58,6 +58,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderer.cs" />
+    <Compile Include="testMerge.cs" />
     <EmbeddedResource Include="FormGameField.resx">
       <DependentUpon>FormGameField.cs</DependentUpon>
     </EmbeddedResource>
