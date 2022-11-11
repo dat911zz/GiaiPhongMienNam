@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D9F7833B-731B-4466-BE71-C595E89C44F6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GameComponents</RootNamespace>
+    <AssemblyName>Components</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>ExtendedDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actor.cs" />
+    <Compile Include="Cell.cs" />
+    <Compile Include="Delegates.cs" />
+    <Compile Include="Maze.cs" />
+    <Compile Include="MazeGenerator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Tank.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Bug.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cog.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Egg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Flag.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Flag2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Food.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GrayHorizontalBrickTexture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GrayVerticalBrickTexture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HorizontalAlienBrickTexture.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HorizontalBrickTexture.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Robot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tank.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TankTread.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VerticalAlienBrickTexture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VerticalBrickTexture.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
