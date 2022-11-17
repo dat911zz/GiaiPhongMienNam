@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace GameComponents
 {
-    /// <summary>
-    /// Used to create a maze to
-    /// be used in the maze game.
-    /// </summary>
+
+    /// Used to create a maze to be used in the maze game.
     class MazeGenerator
     {       
         private Cell[,] maze; /// the maze
@@ -18,13 +16,7 @@ namespace GameComponents
         private Random random;
         private int numberOfPassagesToSeal;
 
-       /// <summary>
-        /// Used to generate a maze with a random
-        /// correct path from a start position
-        /// to an end position.
-        /// </summary>
-        /// <param name="rows">The height of the maze</param>
-        /// <param name="cols">The width of the maze</param>
+        /// Used to generate a maze with a random correct path from a start position to an end position.
         public MazeGenerator(int rows, int cols)
         {
             this.rows = rows;
@@ -39,10 +31,7 @@ namespace GameComponents
         }
 
 
-        /// <summary>
-        /// Initializes all positions within the
-        /// array of cells to new cells.
-        /// </summary>
+        /// Initializes all positions within the array of cells to new cells.
         public void InitializeMaze()
         {
             for (int i = 0; i < rows; i++)
@@ -50,12 +39,7 @@ namespace GameComponents
                     maze[i, j] = new Cell(i, j);
         }
 
-        /// <summary>
-        /// Generates a maze with a random path
-        /// from a random starting position to 
-        /// a random end position.
-        /// </summary>
-        /// <returns></returns>
+        /// Generates a maze with a random path from a random starting position to a random end position.
         public Cell[,] GenerateMaze()
         {
             random = new Random();
@@ -111,11 +95,7 @@ namespace GameComponents
         }
 
 
-        /// <summary>
-        /// Randomly seals passages through the maze to 
-        /// force the player to have to use their cannon
-        /// to break down walls to move on to the next level.
-        /// </summary>
+        /// Randomly seals passages through the maze to force the player to have to use their cannon to break down walls to move on to the next level.
         private void SealPassages(List<Cell> createdPathCells)
         {
             int passagesToPlace = numberOfPassagesToSeal;
@@ -173,12 +153,8 @@ namespace GameComponents
             }
         }
 
-        /// <summary>
-        /// Marks all cell positions within
-        /// the array of cells to visisted.
-        /// Used to clear the visisted status
-        /// after generating the maze pattern.
-        /// </summary>
+        /// Marks all cell positions within the array of cells to visisted.
+        /// Used to clear the visisted status after generating the maze pattern.
         private void ClearVisisted()
         {
             for (int i = 0; i < rows; i++)
@@ -186,15 +162,8 @@ namespace GameComponents
                     maze[i, j].Visited = false;
         }
 
-        /// <summary>
-        /// Sets the walls of the maze cell
-        /// appropriately depending on the 
-        /// direction from the source cell 
-        /// to the destination cell.
-        /// </summary>
-        /// <param name="source">The source cell.</param>
-        /// <param name="destination">The destination cell.</param>
-        /// <param name="direction">The direction moved.</param>
+        /// Sets the walls of the maze cell appropriately depending on the direction from the source cell to the destination cell.
+
         public static void SetWallsByDirection(Cell source, Cell destination, Maze.Direction direction)
         {
             switch (direction)
@@ -221,15 +190,8 @@ namespace GameComponents
         }
 
 
-        /// <summary>
-        /// Returns a random available direction that 
-        /// has not been visisted in the array of maze
-        /// cells. Used in the recursize backtracker 
-        /// maze method.
-        /// </summary>
-        /// <param name="row">The source row.</param>
-        /// <param name="column">The source col.</param>
-        /// <returns>The direction of the next available free cell.</returns>
+        /// Returns a random available direction that  has not been visisted in the array of maze cells. Used in the recursize backtracker maze method.
+        
         public Maze.Direction GetNextRandomDirection(Cell[,] mazeToCheck, int row, int column)
         {
             List<Maze.Direction> availablePosition = new List<Maze.Direction>();
@@ -250,13 +212,9 @@ namespace GameComponents
                 Maze.Direction.None : availablePosition[random.Next(0, availablePosition.Count)];
         }
 
-        /// <summary>
-        /// Gets a random starting position for use
-        /// in the backtracking algorithm.
-        /// </summary>
-        /// <param name="rows">The number of rows in the maze.</param>
-        /// <param name="columns">The number of columns in the maze.</param>
-        /// <returns></returns>
+
+        /// Gets a random starting position for use in the backtracking algorithm.
+
         private Cell GetFirstPosition()
         {
             Cell firstPosition = maze[random.Next(0, rows - 1), random.Next(0, columns - 1)]; 

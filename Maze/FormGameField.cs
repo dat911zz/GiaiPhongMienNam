@@ -45,36 +45,32 @@ namespace Maze
             this.Width = (NumberOfCells + 1) * Renderer.CellWallWidth;
         }
 
-        /// <summary>
         /// Initialize the graphics renderer.
-        /// </summary>
+
         private void InitializeRenderer()
         {
             renderer = new Renderer();
         }
 
-        /// <summary>
+
         /// Set the event listener.
-        /// </summary>
+
         private void SetMazeSolvedEventListener()
         {
             Solved += new MazeSolvedEventHandler(CannonPrimed);
         }
 
-        /// <summary>
+
         /// Creates the maze.
-        /// </summary>
+
         private void CreateMaze()
         {
             maze.InitializeMaze();
         }
 
-        /// <summary>
-        /// Handles pressing keys, will move 
-        /// the actor throughout the maze.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
+        /// Handles pressing keys, will move the actor throughout the maze.
+
         private void frmGameField_KeyPress(object sender, KeyPressEventArgs e)
         {
             bool actorMoved = false;
@@ -114,6 +110,10 @@ namespace Maze
                     CreateMaze();
                     actorMoved = true;
                     break;
+
+                case "H":
+                    maze.HintThePath();
+                    break;
             }
 
             if(actorMoved)           
@@ -133,12 +133,9 @@ namespace Maze
 
         }
 
-        /// <summary>
-        /// Event listener for window painting. Fires
-        /// when changes to the painted area occur.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
+        /// Event listener for window painting. Fires when changes to the painted area occur.
+
         private void frmGameField_Paint(object sender, PaintEventArgs e)
         {
             renderer.DrawMoveHistory(e.Graphics, maze.MoveHistory);
@@ -154,7 +151,8 @@ namespace Maze
             }
             else
             {
-               Renderer.DisplayCannonStatus(e.Graphics, maze.Actor);
+                Renderer.DisplayCannonStatus(e.Graphics, maze.Actor);
+                Renderer.DisplayHintStatus(e.Graphics, maze.Actor);
             }
 
         }

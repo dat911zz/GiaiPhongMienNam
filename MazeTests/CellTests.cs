@@ -8,9 +8,9 @@ namespace GameTests
     public class CellTests
     {
 
-        /// <summary>
+
         /// Test construction of a single maze cell.
-        /// </summary>
+
         [TestMethod]
         public void TestCellConstruction()
         {
@@ -30,9 +30,9 @@ namespace GameTests
             Assert.AreEqual(testCell.BottomWall, secondCell.BottomWall);
         }
 
-        /// <summary>
+
         /// Test toggling walls.
-        /// </summary>
+
          [TestMethod]
         public void TestWallToggling()
         {
@@ -52,9 +52,9 @@ namespace GameTests
             Assert.IsTrue(testCell.TopWall);
         }
 
-        /// <summary>
+
         /// Test toggling visisted / not visisted
-        /// </summary>
+
         [TestMethod]
         public void TestVisitedToggling()
         {

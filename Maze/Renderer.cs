@@ -25,6 +25,7 @@ namespace Maze
         private static readonly string EndPositionIconFileName = "Flag";
         private static readonly string ActorIconFileName = "Tank";
         private static readonly string VisistedIconFileName = "TankTread";
+        private static readonly string HintIconFileName = "Egg";
    
         /// Images to Render Maze
         private Image horizontalWallTexture;
@@ -32,25 +33,17 @@ namespace Maze
         private Image actorImage;
         private Image endPositionImage;
         private Image visitedCellImage;
+        private Image hintImage;
                               
-        /// <summary>
-        /// Used to render the maze components
-        /// onto the form's graphics. 
-        /// </summary>
-        /// <param name="cols">The number of columns in the maze</param>
-        /// <param name="rows">The number of rows in the maze</param>
+
+        /// Used to render the maze components onto the form's graphics. 
+
         public Renderer()
         {
             SetImages();
         }
 
-        /// <summary>
-        /// Assigns the appropriate images
-        /// to the image variables used within
-        /// the renderer. Used to avoid having
-        /// to repeatedly call out to the resource
-        /// manager to get the appropriate resource.
-        /// </summary>
+        /// Assigns the appropriate images to the image variables used within the renderer. Used to avoid having to repeatedly call out to the resource manager to get the appropriate resource.
         private void SetImages()
         {
             horizontalWallTexture = GetImage(HorizontalBrickFile);
@@ -59,13 +52,10 @@ namespace Maze
             actorImage = GetImage(ActorIconFileName);
             endPositionImage = GetImage(EndPositionIconFileName);
             visitedCellImage = GetImage(VisistedIconFileName);
+            hintImage = GetImage(HintIconFileName);
         }
 
-        /// <summary>
         /// Returns an image from resources.
-        /// </summary>
-        /// <param name="imageName"></param>
-        /// <returns></returns>
         public static Image GetImage(String imageName)
         {
             ResourceManager rm = Properties.Resources.ResourceManager;
@@ -74,12 +64,9 @@ namespace Maze
             return image;
         }
 
-        /// <summary>
-        /// Draws the maze on the form using
-        /// the graphics.
-        /// </summary>
-        /// <param name="graphics">The form's graphics</param>
-        /// <param name="maze">The array of cells representing the maze</param>
+        
+        /// Draws the maze on the form using the graphics.
+
         public void DrawMaze(Graphics graphics, GameComponents.Cell[,] maze)
         {
             for (int i = 0; i < maze.GetLength(0); i++)
@@ -92,13 +79,9 @@ namespace Maze
             }
         }
 
-        /// <summary>
-        /// Draws the visited marker within each cell contained
-        /// within the moveHistory. Used to show the visisted 
-        /// locations on the maze.
-        /// </summary>
-        /// <param name="graphics">The form's graphics.</param>
-        /// <param name="moveHistory">The collection of cells to draw.</param>
+
+        /// Draws the visited marker within each cell contained within the moveHistory. Used to show the visisted  locations on the maze.
+
         public void DrawMoveHistory(Graphics graphics, List<Cell> moveHistory)
         {
             if(graphics != null && moveHistory != null)
@@ -108,32 +91,38 @@ namespace Maze
                     DrawVisitedMarker(graphics, cell);
                 }
             }
-
         }
 
-        /// <summary>
+        /// Draws path to go to the flag.
+
+        public void DrawHint(Graphics graphics, List<Cell> move)
+        {
+            if (graphics != null && move != null)
+            {
+                foreach (Cell cell in move)
+                {
+                    DrawHintPath(graphics, cell);
+                }
+            }
+        }
+
         /// Draws a cell on the form.
-        /// </summary>
-        /// <param name="graphics">The form's graphics.</param>
-        /// <param name="cell">The cell to draw.</param>
+
         private void DrawCell(Graphics graphics, Cell cell, Rectangle area)
         {
             DrawWalls(graphics, cell, area);
         }
 
-        /// <summary>
+        
         /// Draws the end position on the form.
-        /// </summary>
-        /// <param name="graphics">The form's graphics.</param>
-        /// <param name="cell">The end position cell.</param>
+        
         public void DrawEndPosition(Graphics graphics, Cell cell)
         {
             if(cell != null && graphics != null)
             {
                 Rectangle area = new Rectangle(cell.Col * CellWallWidth, cell.Row * CellWallHeight + EmptyTopSpaceHeight, CellWallWidth, CellWallHeight);
 
-                /// Padding so that image displays
-                /// within the bounds of the cell.
+                /// Padding so that image displays within the bounds of the cell.
                 area.Width -= CellWallThickness;
                 area.Height -= CellWallThickness;
                 area.X += CellWallThickness;
@@ -145,12 +134,9 @@ namespace Maze
      
         }
 
-        /// <summary>
-        /// Displays the image used to indicate a visited
-        /// location on the form.
-        /// </summary>
-        /// <param name="graphics">The form's graphics.</param>
-        /// <param name="cell">The visited cell.</param>
+
+        /// Displays the image used to indicate a visited location on the form.
+        
         private void DrawVisitedMarker(Graphics graphics, Cell cell)
         {
             int visistedXCoordinate = cell.Col * CellWallWidth + ActorCellPadding;
@@ -160,13 +146,19 @@ namespace Maze
                                                  CellWallWidth / 2, CellWallHeight / 2)); 
         }
 
-        /// <summary>
-        /// Renders the actor onto the game form. Will
-        /// rotatate the actor according to the last
-        /// direction traveled.
-        /// </summary>
-        /// <param name="graphics">The form's graphics.</param>
-        /// <param name="actor">The actor to render.</param>
+        /// Displays the image used to indicate a visited location on the form.
+
+        private void DrawHintPath(Graphics graphics, Cell cell)
+        {
+            int visistedXCoordinate = cell.Col * CellWallWidth + ActorCellPadding;
+            int visistedYCoordinate = cell.Row * CellWallHeight + ActorCellPadding + EmptyTopSpaceHeight;
+
+            graphics.DrawImage(hintImage, new Rectangle(visistedXCoordinate, visistedYCoordinate,
+                                                 CellWallWidth / 2, CellWallHeight / 2));
+        }
+
+        /// Renders the actor onto the game form. Will rotatate the actor according to the last direction traveled.
+
         public void DrawActor(Graphics graphics, Actor actor)
         {
             if(actor != null && graphics != null)
@@ -180,12 +172,9 @@ namespace Maze
             }
         }
 
-        /// <summary>
-        /// Draws the walls of a given cell on
-        /// the form.
-        /// </summary>
-        /// <param name="graphics">The graphics of the form.</param>
-        /// <param name="cell">The cell to be rendered.</param>
+
+        /// Draws the walls of a given cell on the form.
+
         private void DrawWalls(Graphics graphics, Cell cell, Rectangle area)
         {
             Rectangle brick;
@@ -218,14 +207,9 @@ namespace Maze
 
         }
 
-        /// <summary>
-        /// Handles rotating the image according the 
-        /// direction traveled. Used to draw the actor
-        /// in a "moving" position on the screen.
-        /// </summary>
-        /// <param name="sourceImage">The source image</param>
-        /// <param name="directionTravelled"></param>
-        /// <returns></returns>
+
+        /// Handles rotating the image according the  direction traveled. Used to draw the actor in a "moving" position on the screen.
+
         public static Image GetRotatedImage(Image sourceImage, GameComponents.Maze.Direction directionTravelled)
         {
             Image rotatedImage = new Bitmap(sourceImage);
@@ -248,13 +232,8 @@ namespace Maze
             return rotatedImage;
         }
 
-        /// <summary>
-        /// Will display a message at the top of the screen
-        /// in the defaul upper left hand corner displaying
-        /// the message defined.
-        /// </summary>
-        /// <param name="graphics">The form's graphics.</param>
-        /// <param name="message">The message to display.</param>
+        /// Will display a message at the top of the screen in the defaul upper left hand corner displaying the message defined.
+        
         public static void DrawWin(Graphics graphics, String message)
         {
             if(graphics != null && message != null)
@@ -268,13 +247,9 @@ namespace Maze
         }
 
 
-        /// <summary>
-        /// TODO: Move the string display and conditional
-        /// cannon information outside of the renderer. 
+        /// TODO: Move the string display and conditional cannon information outside of the renderer. 
         /// This is a piece of logic that doesn't belong here.
-        /// </summary>
-        /// <param name="graphics"></param>
-        /// <param name="actor"></param>
+
         public static  void DisplayCannonStatus(Graphics graphics, GameComponents.Tank actor)
         {
 
@@ -301,10 +276,26 @@ namespace Maze
                     }
                 }
             }
-
-
-       
         }
 
+        public static void DisplayHintStatus(Graphics graphics, GameComponents.Tank actor)
+        {
+
+            Font winDrawFont = new Font("Consolas", 16);
+            SolidBrush winDrawBrush = new SolidBrush(Color.White);
+            PointF winDrawPoint = new PointF(0, 40);
+
+            if (graphics != null && actor != null)
+            {
+                if (actor.NumberOfHints > 0)
+                {
+                    graphics.DrawString("Nhấn H để sử dụng gợi ý đường đi!", winDrawFont, winDrawBrush, winDrawPoint);
+                }
+                else
+                {
+                    graphics.DrawString("Bạn không thể sử dụng gợi ý nữa!", winDrawFont, winDrawBrush, winDrawPoint);
+                }
+            }
+        }
     }
 }
