@@ -18,23 +18,22 @@ namespace GameComponents
         private int cols;
         private Random random;
         private List<Cell> moveHistory;
+        private List<Cell> hintPath;
 
         public event CannonPrimedEventHandler CannonPrimedEventHandler;
         private MazeGenerator mazeGenerator;
 
-        /// <summary>
+
         /// The possible directions to travel.
-        /// </summary>
+
         public enum Direction
         {
             North, South, West, East, None
         }
 
-        /// <summary>
+
         /// Creates a maze with the specified dimensions
-        /// </summary>
-        /// <param name="rows">The number of rows of the maze.</param>
-        /// <param name="cols"></param>
+
         public Maze(int rows, int cols)
         {
             random = new Random();
@@ -45,9 +44,9 @@ namespace GameComponents
 
         }
 
-        /// <summary>
+
         /// Creates the maze for the game.
-        /// </summary>
+
         public void InitializeMaze()
         {
             mazeGenerator = new MazeGenerator(rows, cols);
@@ -56,22 +55,15 @@ namespace GameComponents
             SetEndPosition();
         }
 
-        /// <summary>
-        /// Returns whether the actor
-        /// occupies the cell designated
-        /// as the end cell.
-        /// </summary>
-        /// <returns></returns>
+        /// Returns whether the actor occupies the cell designated as the end cell.
+
         public bool MazeSolved()
         {
             return actor.Cell.Row == goal.Row && actor.Cell.Col == goal.Col;
         }
 
-        /// <summary>
-        /// Sets the end position of the maze. Will continually
-        /// find a random cell until the end position is not equal
-        /// with the start position.
-        /// </summary>
+        /// Sets the end position of the maze. Will continually find a random cell until the end position is not equal with the start position.
+        
         private void SetEndPosition()
         {
             do          
@@ -79,9 +71,9 @@ namespace GameComponents
             while (goal == actor.Cell);
         }
 
-        /// <summary>
+
         /// Set the actor
-        /// </summary>
+
         private void InitializeActor()
         {
             actor = new Tank(maze[random.Next(0, cols - 1),random.Next(0, rows - 1)]);
@@ -90,12 +82,8 @@ namespace GameComponents
         }
 
 
-        /// <summary>
-        /// Directs the cannon in one of the enumerated
-        /// directions of the maze. Used to prime the 
-        /// cannon before shooting a wall.
-        /// </summary>
-        /// <param name="direction"></param>
+        /// Directs the cannon in one of the enumerated directions of the maze. Used to prime the cannon before shooting a wall.
+        
         public void AimCannon(Direction direction)
         {
             if(actor.NumberOfShells > 0)
@@ -108,21 +96,18 @@ namespace GameComponents
    
         }
 
-        /// <summary>
+
         /// Returns the actor.
-        /// </summary>
+
         public Tank Actor
         {
             get { return actor; }
             set { actor = value; }
         }
 
-        /// <summary>
-        /// Fire the tank's cannon to destroy
-        /// the wall in the direction the cannon
-        /// is aimed towards.
-        /// </summary>
-        /// <returns></returns>
+
+        /// Fire the tank's cannon to destroy the wall in the direction the cannon is aimed towards.
+
         public bool BlastWall()
         {
             if (actor.NumberOfShells > 0 && actor.ShotDirection != Direction.None)
@@ -135,11 +120,27 @@ namespace GameComponents
             return true;
         }
 
-        /// <summary>
+        /// Draw the hint path.
+
+        public bool HintThePath()
+        {
+            //Xử lý thuật toán ở đây theo các bước:
+            //1. Nhận biết vị trí hiện tại
+            //2. Lưu đường đi
+            //3. Vẽ đường đi
+            if (actor.NumberOfHints > 0)
+            {
+                DestroyWall(actor.Cell, actor.ShotDirection);
+
+                actor.NumberOfHints--;
+            }
+
+            return true;
+        }
+
+
         /// Destroys a target wall
-        /// </summary>
-        /// <param name="sourceCell"></param>
-        /// <param name="direction"></param>
+
         private void DestroyWall(Cell sourceCell, Direction direction)
         {
             switch (direction)
@@ -163,11 +164,9 @@ namespace GameComponents
             }
         }
 
-        /// <summary>
-        /// Destroy the wall south of the actor's
-        /// current cell.
-        /// </summary>
-        /// <param name="sourceCell"></param>
+
+        /// Destroy the wall south of the actor's current cell.
+
         private void DestroyNorthWall(Cell sourceCell)
         {
             maze[sourceCell.Row, sourceCell.Col].TopWall = false;
@@ -175,11 +174,8 @@ namespace GameComponents
                 maze[sourceCell.Row - 1, sourceCell.Col].BottomWall = false;
         }
 
-        /// <summary>
-        /// Destroy the wall north of the actor's
-        /// current cell.
-        /// </summary>
-        /// <param name="sourceCell"></param>
+        /// Destroy the wall north of the actor's current cell.
+        
         private void DestroySouthWall(Cell sourceCell)
         {
             maze[sourceCell.Row, sourceCell.Col].BottomWall = false;
@@ -187,11 +183,9 @@ namespace GameComponents
                 maze[sourceCell.Row + 1, sourceCell.Col].TopWall = false;
         }
 
-        /// <summary>
-        /// Destroy the wall west of the actor's
-        /// current cell.
-        /// </summary>
-        /// <param name="sourceCell"></param>
+
+        /// Destroy the wall west of the actor's current cell.
+        
         private void DestroyWestWall(Cell sourceCell)
         {
             maze[sourceCell.Row, sourceCell.Col].LeftWall = false;
@@ -199,11 +193,9 @@ namespace GameComponents
                 maze[sourceCell.Row, sourceCell.Col - 1].RightWall = false;
         }
 
-        /// <summary>
-        /// Destroy the wall east of the 
-        /// actor's cell.
-        /// </summary>
-        /// <param name="sourceCell"></param>
+
+        /// Destroy the wall east of the actor's cell.
+
         private void DestroyEastWall(Cell sourceCell)
         {
             maze[sourceCell.Row, sourceCell.Col].RightWall = false;
@@ -211,12 +203,9 @@ namespace GameComponents
                 maze[sourceCell.Row, sourceCell.Col + 1].LeftWall = false;
         }
 
-        /// <summary>
-        /// Attempt to move the actor in the supplied
-        /// direction.
-        /// </summary>
-        /// <param name="direction">The direction to move.</param>
-        /// <returns>Whether the actor has moved</returns>
+
+        /// Attempt to move the actor in the supplied direction.
+
         public bool MoveActor(Direction direction)
         {
             bool moved;
@@ -261,16 +250,9 @@ namespace GameComponents
             return moved;
         }
 
-        /// <summary>
-        /// Checks to see if the actor can move to
-        /// the given row or column by checking if 
-        /// it is a valid cell and if the wall configuration
-        /// will allow the actor to travel there.
-        /// </summary>
-        /// <param name="row">The destination row.</param>
-        /// <param name="col">The destination column.</param>
-        /// <param name="direction">The direction of the destination from source.</param>
-        /// <returns></returns>
+
+        /// Checks to see if the actor can move to the given row or column by checking if it is a valid cell and if the wall configuration will allow the actor to travel there.
+        
         private bool IsPathFree(int row, int col, Direction direction)
         {
             switch (direction)
@@ -288,34 +270,36 @@ namespace GameComponents
             }
         }
 
-        /// <summary>
+
         /// Returns the array of cells.
-        /// </summary>
-        /// <returns></returns>
+        
         public Cell[,] GetMaze()
         {
             return maze;
         }
 
-        /// <summary>
-        /// This cell represents
-        /// the target cell for 
-        /// the actor to reach.
-        /// </summary>
+
+        /// This cell represents the target cell for the actor to reach.
+        
         public Cell EndPosition
         {
             get { return goal; }
             set { goal = value; }
         }
 
-        /// <summary>
+
         /// Returns the history of actor moves.
-        /// </summary>
+
         public List<Cell> MoveHistory
         {
             /// TODO: Implement a return of a generic list.
             /// http://stackoverflow.com/questions/16806786/dont-expose-generic-list-why-to-use-collectiont-instead-of-listt-in-meth
             get { return moveHistory; }
+        }
+
+        public List<Cell> HintPath
+        {
+            get => hintPath;
         }
     }
 }

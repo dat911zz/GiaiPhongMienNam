@@ -33,10 +33,9 @@ namespace GameTests
 
         }
 
-        /// <summary>
-        /// Test the generation of the move history used
-        /// to mark the correct path.
-        /// </summary>
+
+        /// Test the generation of the move history used to mark the correct path.
+
         [TestMethod]
         public void TestMoveHistoryGeneration()
         {
@@ -57,10 +56,9 @@ namespace GameTests
 
         }
 
-        /// <summary>
-        /// Test the generation of the move history used
-        /// to mark the correct path.
-        /// </summary>
+
+        /// Test the generation of the move history used to mark the correct path.
+
         [TestMethod]
         public void TestMovingActorThroughWalls()
         {
@@ -96,10 +94,9 @@ namespace GameTests
 
         }
 
-        /// <summary>
-        /// Tests the ability of the tank to blast
-        /// through blocked walls.
-        /// </summary>
+
+        /// Tests the ability of the tank to blast through blocked walls.
+
         [TestMethod]
         public void TestBlastingThroughWalls()
         {
@@ -129,16 +126,6 @@ namespace GameTests
             Assert.IsTrue(maze.MoveActor(maze.Actor.Cell.Col == 0 ? Maze.Direction.East : Maze.Direction.West));
 
         }
-
-
-
-
     }
-
-
-
-
-
-
 }
 

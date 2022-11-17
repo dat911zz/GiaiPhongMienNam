@@ -8,39 +8,39 @@ namespace GameComponents
 {
     public class Tank : Actor
     {
-        private int numberOfShells = 3;
+        private int numberOfShells = 4;
+        private int numberOfHints = 1;
         private Maze.Direction shotDirection;
 
-        /// <summary>
-        /// Creates an actor object
-        /// which will have a certain
-        /// cell within a grid.
-        /// </summary>
-        /// <param name="position"></param>
+
+        /// Creates an actor object which will have a certain cell within a grid.
+
         public Tank(Cell position)
         {
             shotDirection = Maze.Direction.None;
             this.Cell = position;
         }
 
-        /// <summary>
-        /// The number of shells the tank 
-        /// remaining.
-        /// </summary>
+        /// The number of shells the tank  remaining.
+
         public int NumberOfShells
         {
             get { return numberOfShells; }
             set { numberOfShells = value; }
         }
 
-        /// <summary>
-        /// The direction in which the cannon
-        /// is aimed.
-        /// </summary>
+        /// The direction in which the cannon is aimed.
+
         public Maze.Direction ShotDirection
         {
             get { return shotDirection; }
             set { shotDirection = value; }
+        }
+
+        public int NumberOfHints 
+        {
+            get => numberOfHints;
+            set => numberOfHints = value; 
         }
     }
 }
