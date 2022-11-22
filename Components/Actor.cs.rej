@@ -1,0 +1,9 @@
+diff a/Components/Actor.cs b/Components/Actor.cs	(rejected hunks)
+@@ -6,7 +6,6 @@
+ 
+ namespace GameComponents
+ {
+-    /// </summary>
+ 
+     /// Represents the actor  which will be responsible for moving throughout the maze
+ 
