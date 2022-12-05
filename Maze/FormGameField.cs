@@ -129,8 +129,6 @@ namespace Maze
                 CreateMaze();
                 Invalidate();
             }
-            
-
         }
 
 
@@ -142,17 +140,16 @@ namespace Maze
             renderer.DrawMaze(e.Graphics, maze.GetMaze());
             renderer.DrawActor(e.Graphics, maze.Actor);
             renderer.DrawEndPosition(e.Graphics, maze.EndPosition);
-   
 
 
-            if(maze.MazeSolved())
+            if (maze.MazeSolved())
             {
                 Renderer.DrawWin(e.Graphics, WinMessage);
             }
             else
             {
-                Renderer.DisplayCannonStatus(e.Graphics, maze.Actor);
                 Renderer.DisplayHintStatus(e.Graphics, maze.Actor);
+                Renderer.DisplayCannonStatus(e.Graphics, maze.Actor);
             }
 
         }

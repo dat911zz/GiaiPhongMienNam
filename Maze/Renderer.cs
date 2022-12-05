@@ -50,9 +50,8 @@ namespace Maze
             verticalWallTexture = GetImage(VerticalBrickFileName);
             visitedCellImage = GetImage(VisistedIconFileName);
             actorImage = GetImage(ActorIconFileName);
-            endPositionImage = GetImage(EndPositionIconFileName);
-            visitedCellImage = GetImage(VisistedIconFileName);
             hintImage = GetImage(HintIconFileName);
+            endPositionImage = GetImage(EndPositionIconFileName);
         }
 
         /// Returns an image from resources.
@@ -243,7 +242,6 @@ namespace Maze
                 PointF winDrawPoint = new PointF(0, EmptyTopSpaceHeight / 2);
                 graphics.DrawString(message, winDrawFont, winDrawBrush, winDrawPoint);
             }
-
         }
 
 

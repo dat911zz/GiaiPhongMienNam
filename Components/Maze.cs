@@ -11,14 +11,18 @@ namespace GameComponents
 
     public class Maze
     {
-        private Tank actor; 
+        private Tank actor;
+        private Hint hint;
         private Cell[,] maze;
+        private Cell[,] mazecoppy;
         private Cell goal; 
         private int rows;
         private int cols;
         private Random random;
         private List<Cell> moveHistory;
         private List<Cell> hintPath;
+        private List<Cell> freePath;
+        private List<Cell> OpenCells;
 
         public event CannonPrimedEventHandler CannonPrimedEventHandler;
         private MazeGenerator mazeGenerator;
@@ -81,9 +85,15 @@ namespace GameComponents
             moveHistory.Add(actor.Cell);
         }
 
+        private void InitializeHintEntity()
+        {
+            hint = new Hint(MoveHistory.Last());
+            hintPath = new List<Cell>();
+            hintPath.Add(hint.Cell);
+        }
 
         /// Directs the cannon in one of the enumerated directions of the maze. Used to prime the cannon before shooting a wall.
-        
+
         public void AimCannon(Direction direction)
         {
             if(actor.NumberOfShells > 0)
@@ -126,14 +136,63 @@ namespace GameComponents
         {
             //Xử lý thuật toán ở đây theo các bước:
             //1. Nhận biết vị trí hiện tại
-            //2. Lưu đường đi
-            //3. Vẽ đường đi
             if (actor.NumberOfHints > 0)
             {
-                DestroyWall(actor.Cell, actor.ShotDirection);
+                InitializeHintEntity();
+                mazecoppy = maze;
+
+                SolveMaze();
 
                 actor.NumberOfHints--;
+
+
+            //3. Vẽ đường đi
+
             }
+            return true;
+        }
+
+        //Find the path or check all possible path by using A* Algorithm
+        public List<Cell> FindPossiblePath(List<Cell> freePath)
+        {
+            // H: Heuristic
+            int H = Math.Abs(hint.Cell.Row - goal.Row) + Math.Abs(hint.Cell.Col - goal.Col);
+            OpenCells = new List<Cell>();
+
+            do {
+                    //Check possible direction and add to OpenCells List
+                if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.North))
+                    OpenCells.Add(maze[hint.Cell.Row - 1, hint.Cell.Col]);
+
+                if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.South))
+                    OpenCells.Add(maze[hint.Cell.Row + 1, hint.Cell.Col]);
+
+                if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.West))
+                    OpenCells.Add(maze[hint.Cell.Row, hint.Cell.Col - 1]);
+
+                if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.East))
+                    OpenCells.Add(maze[hint.Cell.Row, hint.Cell.Col + 1]);
+                
+
+                //Recalculate H every loop time
+                H = Math.Abs(hint.Cell.Row - goal.Row) + Math.Abs(hint.Cell.Col - goal.Col);
+
+                    //
+
+            } while (freePath.All(temp => !temp.Visited )) ;
+
+            return freePath;
+        }
+
+        // Let the Hint find the way
+        public bool SolveMaze()
+        {
+            Cell currentPosition = hint.Cell;
+            
+            do {    //Keep destroy wall and find (calculate) the path till there's no any free path left
+                if (hint.Cell.Row == goal.Row && hint.Cell.Col == goal.Col)
+                    break;
+            } while (freePath != null);
 
             return true;
         }
@@ -212,7 +271,6 @@ namespace GameComponents
 
             if (moved = IsPathFree(actor.Cell.Row, actor.Cell.Col, direction))
             {
-   
                switch (direction)
                 {
                     case Direction.North:
@@ -250,9 +308,51 @@ namespace GameComponents
             return moved;
         }
 
+        public bool MoveHint(Direction direction)
+        {
+            bool moved;
+
+            if (moved = IsPathFree(hint.Cell.Row, hint.Cell.Col, direction))
+            {
+                switch (direction)
+                {
+                    case Direction.North:
+                        hint.Cell = maze[hint.Cell.Row - 1, hint.Cell.Col];
+                        break;
+                    case Direction.South:
+                        hint.Cell = maze[hint.Cell.Row + 1, hint.Cell.Col];
+                        break;
+                    case Direction.West:
+                        hint.Cell = maze[hint.Cell.Row, hint.Cell.Col - 1];
+                        break;
+                    case Direction.East:
+                        hint.Cell = maze[hint.Cell.Row, hint.Cell.Col + 1];
+                        break;
+                    default:
+                        break;
+                }
+                
+                hint.LastDirectionMoved = direction;
+
+                if (moveHistory.Contains(hint.Cell))
+                {
+                    int firstTempPosition = moveHistory.IndexOf(moveHistory.First(number => number == hint.Cell));
+                    int lastPosition = moveHistory.Count - moveHistory.IndexOf(moveHistory.Last(number => number == hint.Cell));
+                    moveHistory.RemoveRange(firstTempPosition, lastPosition);
+                    moveHistory.Add(hint.Cell);
+                }
+
+
+                else
+                    moveHistory.Add(actor.Cell);
+
+            }
+
+            return moved;
+        }
 
         /// Checks to see if the actor can move to the given row or column by checking if it is a valid cell and if the wall configuration will allow the actor to travel there.
-        
+
         private bool IsPathFree(int row, int col, Direction direction)
         {
             switch (direction)

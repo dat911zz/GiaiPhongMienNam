@@ -26,15 +26,15 @@ namespace GameComponents
                 this.leftWallBlocked = cell.LeftWall;
                 this.RightWall = cell.RightWall;
                 this.TopWall = cell.TopWall;
+                this.BottomWall = cell.BottomWall;
                 this.Row = cell.Row;
                 this.Col = cell.Col;
-                this.BottomWall = cell.BottomWall;
             }
 
         }
 
 
-        /// Creates a cell with the  specified row and column
+        /// Creates a cell with the specified row and column
 
         public Cell(int row, int col)
         {
