@@ -8,7 +8,7 @@ namespace GameComponents
 {
     public class Hint : Actor
     {
-        private int numberOfShells = 4;
+        private int numberOfShells = 200;
         private int numberOfHints = 1;
         private Maze.Direction shotDirection;
 

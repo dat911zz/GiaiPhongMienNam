@@ -18,7 +18,7 @@ namespace Maze
         public static readonly int CellWallWidth = 50; // the width of a single cell
         private static readonly int ActorCellPadding = 5 + CellWallThickness; // the amount of space between the actor and the wall
         public static readonly int EmptyTopSpaceHeight = 100; // the amount of space between the top of the screen
-      
+
         /// Image File Names
         private static readonly string HorizontalBrickFile = "GrayHorizontalBrickTexture";
         private static readonly string VerticalBrickFileName = "GrayVerticalBrickTexture";
@@ -248,7 +248,7 @@ namespace Maze
         /// TODO: Move the string display and conditional cannon information outside of the renderer. 
         /// This is a piece of logic that doesn't belong here.
 
-        public static  void DisplayCannonStatus(Graphics graphics, GameComponents.Tank actor)
+        public static void DisplayCannonStatus(Graphics graphics, GameComponents.Tank actor)
         {
 
             Font winDrawFont = new Font("Consolas", 16);
@@ -266,7 +266,8 @@ namespace Maze
                 {
                     if (actor.NumberOfShells > 0)
                     {
-                        graphics.DrawString(actor.NumberOfShells.ToString() + " viên đạn còn lại! ", winDrawFont, winDrawBrush, winDrawPoint);
+                        
+                        graphics.DrawString(actor.ShellsUsed.ToString() + " viên đạn đã sử dụng! ", winDrawFont, winDrawBrush, winDrawPoint);
                     }
                     else
                     {

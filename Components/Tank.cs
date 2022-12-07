@@ -8,10 +8,11 @@ namespace GameComponents
 {
     public class Tank : Actor
     {
-        private int numberOfShells = 4;
+        private int numberOfShells = 200;
         private int numberOfHints = 1;
+        private int shellsUsed = 0;
+        private int numberOfSteps = 0;
         private Maze.Direction shotDirection;
-
 
         /// Creates an actor object which will have a certain cell within a grid.
 
@@ -42,5 +43,7 @@ namespace GameComponents
             get => numberOfHints;
             set => numberOfHints = value; 
         }
+        public int ShellsUsed { get => shellsUsed; set => shellsUsed = value; }
+        public int NumberOfStep { get => numberOfSteps; set => numberOfSteps = value; }
     }
 }

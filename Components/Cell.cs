@@ -13,7 +13,7 @@ namespace GameComponents
     public class Cell
     {
         private bool leftWallBlocked = true, rightWallBlocked = true, topWallBlocked = true, bottomWallBlocked = true;
-        private int cellRow, cellCol;
+        private int cellRow, cellCol, heuristic;
         private bool cellVisisted;
 
 
@@ -106,5 +106,6 @@ namespace GameComponents
             set { cellVisisted = value; }
         }
 
+        public int Heuristic { get => heuristic; set => heuristic = value; }
     }
 }
