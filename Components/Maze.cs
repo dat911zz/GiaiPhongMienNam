@@ -58,6 +58,7 @@ namespace GameComponents
             SetEndPosition();
             foreach (Cell cell in maze)
                 cell.Visited = false;
+            hintPath = new List<Cell>();
         }
 
         /// Returns whether the actor occupies the cell designated as the end cell.
