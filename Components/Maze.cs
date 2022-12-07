@@ -56,6 +56,8 @@ namespace GameComponents
             maze = mazeGenerator.GenerateMaze();
             InitializeActor();
             SetEndPosition();
+            foreach (Cell cell in maze)
+                cell.Visited = false;
         }
 
         /// Returns whether the actor occupies the cell designated as the end cell.
@@ -184,13 +186,17 @@ namespace GameComponents
                     freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
                 }
 
-                freePath.Sort((x, y) => x.Heuristic.CompareTo(y.Heuristic));
+                freePath = freePath.OrderBy(x => x.Heuristic).ToList();
 
-                //Move hint to Cell which has min Heuristic in freePath but hasn't visited
-                if (freePath.First().Visited == false)
+                //Move hint to Cell which has min Heuristic in freePath but hasn't visited and set visited = true
+                if (freePath.Any(temp => temp.Row == goal.Row && temp.Col == goal.Col))
                 {
+                    hint.Cell = freePath.First(temp => temp.Row == goal.Row && temp.Col == goal.Col);
+                }
+                else if (!freePath.All(temp => temp.Visited))
+                {
+                    hint.Cell = freePath.First(temp => temp.Visited == false);
                     hint.Cell.Visited = true;
-                    hint.Cell = freePath.First(); //Need fix, too
                 }
 
             } while (!freePath.All(temp => temp.Visited) && !freePath.Any(temp => temp.Row == goal.Row && temp.Col == goal.Col)) ;
@@ -198,18 +204,31 @@ namespace GameComponents
             return freePath;
         }
 
+        //Auto destroy wall
+        public void AutoDestroyWall()
+        {
+            freePath = freePath.OrderBy(x => x.Heuristic).ToList();
+            hint.Cell = freePath.First();
+
+            //Check where is the best direction to destroy wall
+
+            //Destroy wall
+
+        }
+
         // Let the Hint find the way
         public bool SolveMaze()
         {
             //Save current state
             Cell currentPosition = hint.Cell;
+            freePath = new List<Cell>();
 
 
             do {    //Keep destroy wall and find (calculate) the path till there's no any free path left
                 freePath = FindPossiblePath(freePath);
                 
                 
-            } while (freePath != null && !(hint.Cell.Row == goal.Row && hint.Cell.Col == goal.Col));
+            } while (!(hint.Cell.Row == goal.Row && hint.Cell.Col == goal.Col));
 
             return true;
         }
