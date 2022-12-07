@@ -136,11 +136,11 @@ namespace Maze
 
         private void frmGameField_Paint(object sender, PaintEventArgs e)
         {
-            renderer.DrawMoveHistory(e.Graphics, maze.MoveHistory);
             renderer.DrawMaze(e.Graphics, maze.GetMaze());
-            renderer.DrawActor(e.Graphics, maze.Actor);
+            renderer.DrawHint(e.Graphics, maze.HintPath);
+            renderer.DrawMoveHistory(e.Graphics, maze.MoveHistory);
             renderer.DrawEndPosition(e.Graphics, maze.EndPosition);
-
+            renderer.DrawActor(e.Graphics, maze.Actor);
 
             if (maze.MazeSolved())
             {

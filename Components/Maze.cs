@@ -150,7 +150,8 @@ namespace GameComponents
                 actor.NumberOfHints--;
 
 
-            //3. Vẽ đường đi
+                maze = mazecopy;
+
 
             }
             return true;
@@ -207,13 +208,50 @@ namespace GameComponents
         //Auto destroy wall
         public void AutoDestroyWall()
         {
-            freePath = freePath.OrderBy(x => x.Heuristic).ToList();
-            hint.Cell = freePath.First();
-
+            if (freePath.Count != 0)
+            {
+                freePath = freePath.OrderBy(x => x.Heuristic).ToList();
+                hint.Cell = freePath.First();
+            }
             //Check where is the best direction to destroy wall
+            if(hint.Cell.Row - 1 == goal.Row && hint.Cell.Col == goal.Col)
+                hint.ShotDirection = Direction.North;
+            else if(hint.Cell.Row + 1 == goal.Row && hint.Cell.Col == goal.Col)
+                hint.ShotDirection = Direction.South;
+            else if(hint.Cell.Row == goal.Row && hint.Cell.Col - 1 == goal.Col)
+                hint.ShotDirection = Direction.West;
+            else if(hint.Cell.Row == goal.Row && hint.Cell.Col + 1 == goal.Col)
+                hint.ShotDirection = Direction.East;
+            else
+            {
+                //North
+                if (hint.Cell.Row > 0 && maze[hint.Cell.Row - 1, hint.Cell.Col].Heuristic < hint.Cell.Heuristic)
+                {
+                    hint.ShotDirection = Direction.North;
+                }
+                //South
+                else if (hint.Cell.Row < 9 && maze[hint.Cell.Row + 1, hint.Cell.Col].Heuristic < hint.Cell.Heuristic)
+                {
+                    hint.ShotDirection = Direction.South;
+                }
+                //West
+                else if (hint.Cell.Col > 0 && maze[hint.Cell.Row, hint.Cell.Col - 1].Heuristic < hint.Cell.Heuristic)
+                {
+                    hint.ShotDirection = Direction.West;
+                }
+                //East
+                else if (hint.Cell.Col < 9 && maze[hint.Cell.Row, hint.Cell.Col + 1].Heuristic < hint.Cell.Heuristic)
+                {
+                    hint.ShotDirection = Direction.East;
+                }
+            }
 
-            //Destroy wall
-
+            //Shoot
+            CannonPrimedEventHandler();
+            DestroyWall(hint.Cell, hint.ShotDirection);
+            hint.ShotDirection = Direction.None;
+            actor.NumberOfShells--;
+            actor.ShellsUsed++;
         }
 
         // Let the Hint find the way
@@ -227,8 +265,16 @@ namespace GameComponents
             do {    //Keep destroy wall and find (calculate) the path till there's no any free path left
                 freePath = FindPossiblePath(freePath);
                 
-                
-            } while (!(hint.Cell.Row == goal.Row && hint.Cell.Col == goal.Col));
+                if(!freePath.Any(temp => temp.Row == goal.Row && temp.Col == goal.Col))
+                    AutoDestroyWall();
+
+                foreach (Cell cell in freePath)
+                    cell.Visited = false;
+
+            } while (!freePath.Any(temp => temp.Row == goal.Row && temp.Col == goal.Col));
+
+            hint.Cell = currentPosition;
+            hintPath = FindPossiblePath(hintPath);
 
             return true;
         }

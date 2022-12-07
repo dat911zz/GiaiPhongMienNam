@@ -94,11 +94,11 @@ namespace Maze
 
         /// Draws path to go to the flag.
 
-        public void DrawHint(Graphics graphics, List<Cell> move)
+        public void DrawHint(Graphics graphics, List<Cell> hintPath)
         {
-            if (graphics != null && move != null)
+            if (graphics != null && hintPath != null)
             {
-                foreach (Cell cell in move)
+                foreach (Cell cell in hintPath)
                 {
                     DrawHintPath(graphics, cell);
                 }
