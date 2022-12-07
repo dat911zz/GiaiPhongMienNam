@@ -155,7 +155,6 @@ namespace Maze
 
         }
 
-
         private void CannonPrimed()
         {
             Refresh();
