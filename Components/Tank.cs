@@ -44,6 +44,6 @@ namespace GameComponents
             set => numberOfHints = value; 
         }
         public int ShellsUsed { get => shellsUsed; set => shellsUsed = value; }
-        public int NumberOfStep { get => numberOfSteps; set => numberOfSteps = value; }
+        public int NumberOfSteps { get => numberOfSteps; set => numberOfSteps = value; }
     }
 }

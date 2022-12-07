@@ -150,6 +150,7 @@ namespace Maze
             {
                 Renderer.DisplayHintStatus(e.Graphics, maze.Actor);
                 Renderer.DisplayCannonStatus(e.Graphics, maze.Actor);
+                Renderer.DisplayCostStatus(e.Graphics, maze.Actor);
             }
 
         }
@@ -163,7 +164,7 @@ namespace Maze
         private void DisplayWin()
         {
             Refresh();
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
         }
     }
 }

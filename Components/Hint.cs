@@ -10,6 +10,7 @@ namespace GameComponents
     {
         private int numberOfShells = 200;
         private int numberOfHints = 1;
+        private int numberOfSteps = 0;
         private Maze.Direction shotDirection;
 
 
@@ -42,5 +43,6 @@ namespace GameComponents
             get => numberOfHints;
             set => numberOfHints = value;
         }
+        public int NumberOfSteps { get => numberOfSteps; set => numberOfSteps = value; }
     }
 }

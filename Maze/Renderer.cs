@@ -239,7 +239,7 @@ namespace Maze
             {
                 Font winDrawFont = new Font("Consolas", 16);
                 SolidBrush winDrawBrush = new SolidBrush(Color.White);
-                PointF winDrawPoint = new PointF(0, EmptyTopSpaceHeight / 2);
+                PointF winDrawPoint = new PointF(0, EmptyTopSpaceHeight / 2 - 10);
                 graphics.DrawString(message, winDrawFont, winDrawBrush, winDrawPoint);
             }
         }
@@ -282,7 +282,7 @@ namespace Maze
 
             Font winDrawFont = new Font("Consolas", 16);
             SolidBrush winDrawBrush = new SolidBrush(Color.White);
-            PointF winDrawPoint = new PointF(0, 40);
+            PointF winDrawPoint = new PointF(0, 30);
 
             if (graphics != null && actor != null)
             {
@@ -294,6 +294,19 @@ namespace Maze
                 {
                     graphics.DrawString("Bạn không thể sử dụng gợi ý nữa!", winDrawFont, winDrawBrush, winDrawPoint);
                 }
+            }
+        }
+
+        public static void DisplayCostStatus(Graphics graphics, GameComponents.Tank actor)
+        {
+
+            Font winDrawFont = new Font("Consolas", 16);
+            SolidBrush winDrawBrush = new SolidBrush(Color.White);
+            PointF winDrawPoint = new PointF(0, 60);
+
+            if (graphics != null && actor != null)
+            {
+                graphics.DrawString("Số bước đã đi so với vị trí bắt đầu: " + actor.NumberOfSteps.ToString(), winDrawFont, winDrawBrush, winDrawPoint);
             }
         }
     }

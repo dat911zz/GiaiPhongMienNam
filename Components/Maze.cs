@@ -206,9 +206,10 @@ namespace GameComponents
 
 
             do {    //Keep destroy wall and find (calculate) the path till there's no any free path left
-                if (hint.Cell.Row == goal.Row && hint.Cell.Col == goal.Col)
-                    break;
-            } while (freePath != null);
+                freePath = FindPossiblePath(freePath);
+                
+                
+            } while (freePath != null && !(hint.Cell.Row == goal.Row && hint.Cell.Col == goal.Col));
 
             return true;
         }
@@ -312,12 +313,16 @@ namespace GameComponents
                     int firstTempPosition = moveHistory.IndexOf(moveHistory.First(number => number == actor.Cell));
                     int lastPosition = moveHistory.Count - moveHistory.IndexOf(moveHistory.Last(number => number == actor.Cell));
                     moveHistory.RemoveRange(firstTempPosition, lastPosition);
-                    moveHistory.Add(actor.Cell);              
+                    moveHistory.Add(actor.Cell);
+                    actor.NumberOfSteps -= 1;
                 }
-                  
+
 
                 else
+                {
                     moveHistory.Add(actor.Cell);
+                    actor.NumberOfSteps += 1;
+                }
                 
             }
 
