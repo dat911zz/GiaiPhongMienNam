@@ -16,7 +16,7 @@ namespace Maze
 
         private GameComponents.Maze maze;
         private Renderer renderer;
-        public static readonly int NumberOfCells= 10;
+        public static readonly int NumberOfCells = 10;
         public event MazeSolvedEventHandler Solved;
         public event CannonPrimedEventHandler CannonAimed;
 
@@ -139,8 +139,8 @@ namespace Maze
             renderer.DrawMaze(e.Graphics, maze.GetMaze());
             renderer.DrawHint(e.Graphics, maze.HintPath);
             renderer.DrawMoveHistory(e.Graphics, maze.MoveHistory);
-            renderer.DrawEndPosition(e.Graphics, maze.EndPosition);
             renderer.DrawActor(e.Graphics, maze.Actor);
+            renderer.DrawEndPosition(e.Graphics, maze.EndPosition);
 
             if (maze.MazeSolved())
             {
