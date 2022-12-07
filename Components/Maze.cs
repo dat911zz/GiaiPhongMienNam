@@ -133,6 +133,19 @@ namespace GameComponents
 
             return true;
         }
+        public Cell[,] DeepCoppy(Cell[,] maze)
+        {
+            int n = maze.Length / 10;
+            Cell[,] tmpMaze = new Cell[n, n];
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    tmpMaze[i, j] = new Cell(maze[i, j]);
+                }
+            }
+            return tmpMaze;
+        }
 
         /// Draw the hint path.
 
@@ -143,20 +156,17 @@ namespace GameComponents
             if (actor.NumberOfHints > 0)
             {
                 InitializeHintEntity();
-                mazecopy = maze;
-
+                mazecopy = DeepCoppy(maze);//Using deep coppy
+                //mazecopy[0, 2].Heuristic = -1;
                 SolveMaze();
 
                 actor.NumberOfHints--;
-
-
-                maze = mazecopy;
+                maze = DeepCoppy(mazecopy);//Not using deep coppy
 
 
             }
             return true;
         }
-
         //Find the path or check all possible path by using A* Algorithm
         public List<Cell> FindPossiblePath(List<Cell> freePath)
         {
