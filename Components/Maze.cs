@@ -356,9 +356,12 @@ namespace GameComponents
                 // Tìm trong FreePath những thằng đã tồn tại trong hintPath và giá trị cost của thằng đó trong freePath nhỏ hơn giá trị cost của thằng đó trong hintPath
                 if (freePath.Any(temp => hintPath.Contains(temp) && temp.Cost < hintPath.Find(x => x == temp).Cost))
                 {
-                    hint.Cell = freePath.Find(temp => hintPath.Contains(temp) && temp.Cost < hintPath.Find(x => x.Col == temp.Col && x.Row == temp.Row).Cost);
-                    hintPath.Find(x => x.Col == hint.Cell.Col && x.Row == hint.Cell.Row).Heuristic = Math.Abs(hint.Cell.Row - goal.Row) + Math.Abs(hint.Cell.Col - goal.Col); ;
-                    hintPath.Find(x => x.Col == hint.Cell.Col && x.Row == hint.Cell.Row).F = GetF(hint.Cell);
+                    //hint.Cell = freePath.Find(temp => hintPath.Contains(temp) && temp.Cost < hintPath.Find(x => x.Col == temp.Col && x.Row == temp.Row).Cost);
+                    var tmpHints = freePath.Where(temp => hintPath.Contains(temp) && temp.Cost < hintPath.Find(x => x.Col == temp.Col && x.Row == temp.Row).Cost);
+                    tmpHints.ToList().ForEach(h => {
+                        hintPath.Find(x => x.Col == h.Col && x.Row == h.Row).Heuristic = Math.Abs(h.Row - goal.Row) + Math.Abs(h.Col - goal.Col);
+                        hintPath.Find(x => x.Col == h.Col && x.Row == h.Row).F = GetF(hint.Cell);
+                    });                 
                     continue;
                 }
 
