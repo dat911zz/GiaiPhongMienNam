@@ -49,6 +49,7 @@
     <Compile Include="Actor.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="Delegates.cs" />
+    <Compile Include="Hint.cs" />
     <Compile Include="Maze.cs" />
     <Compile Include="MazeGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

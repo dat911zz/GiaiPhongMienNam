@@ -16,7 +16,7 @@ namespace Maze
 
         private GameComponents.Maze maze;
         private Renderer renderer;
-        public static readonly int NumberOfCells= 10;
+        public static readonly int NumberOfCells = 10;
         public event MazeSolvedEventHandler Solved;
         public event CannonPrimedEventHandler CannonAimed;
 
@@ -129,8 +129,6 @@ namespace Maze
                 CreateMaze();
                 Invalidate();
             }
-            
-
         }
 
 
@@ -138,25 +136,24 @@ namespace Maze
 
         private void frmGameField_Paint(object sender, PaintEventArgs e)
         {
-            renderer.DrawMoveHistory(e.Graphics, maze.MoveHistory);
             renderer.DrawMaze(e.Graphics, maze.GetMaze());
+            renderer.DrawHint(e.Graphics, maze.HintPath);
+            renderer.DrawMoveHistory(e.Graphics, maze.MoveHistory);
             renderer.DrawActor(e.Graphics, maze.Actor);
             renderer.DrawEndPosition(e.Graphics, maze.EndPosition);
-   
 
-
-            if(maze.MazeSolved())
+            if (maze.MazeSolved())
             {
                 Renderer.DrawWin(e.Graphics, WinMessage);
             }
             else
             {
-                Renderer.DisplayCannonStatus(e.Graphics, maze.Actor);
                 Renderer.DisplayHintStatus(e.Graphics, maze.Actor);
+                Renderer.DisplayCannonStatus(e.Graphics, maze.Actor);
+                Renderer.DisplayCostStatus(e.Graphics, maze.Actor);
             }
 
         }
-
 
         private void CannonPrimed()
         {
@@ -166,7 +163,7 @@ namespace Maze
         private void DisplayWin()
         {
             Refresh();
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
         }
     }
 }

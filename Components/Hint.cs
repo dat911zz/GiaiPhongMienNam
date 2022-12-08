@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace GameComponents
 {
-    public class Tank : Actor
+    public class Hint : Actor
     {
         private int numberOfShells = 200;
         private int numberOfHints = 1;
-        private int shellsUsed = 0;
         private int numberOfSteps = 0;
         private Maze.Direction shotDirection;
 
+
         /// Creates an actor object which will have a certain cell within a grid.
 
-        public Tank(Cell position)
+        public Hint(Cell position)
         {
             shotDirection = Maze.Direction.None;
             this.Cell = position;
@@ -38,12 +38,11 @@ namespace GameComponents
             set { shotDirection = value; }
         }
 
-        public int NumberOfHints 
+        public int NumberOfHints
         {
             get => numberOfHints;
-            set => numberOfHints = value; 
+            set => numberOfHints = value;
         }
-        public int ShellsUsed { get => shellsUsed; set => shellsUsed = value; }
         public int NumberOfSteps { get => numberOfSteps; set => numberOfSteps = value; }
     }
 }

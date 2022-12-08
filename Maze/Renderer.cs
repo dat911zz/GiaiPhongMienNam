@@ -18,7 +18,7 @@ namespace Maze
         public static readonly int CellWallWidth = 50; // the width of a single cell
         private static readonly int ActorCellPadding = 5 + CellWallThickness; // the amount of space between the actor and the wall
         public static readonly int EmptyTopSpaceHeight = 100; // the amount of space between the top of the screen
-      
+
         /// Image File Names
         private static readonly string HorizontalBrickFile = "GrayHorizontalBrickTexture";
         private static readonly string VerticalBrickFileName = "GrayVerticalBrickTexture";
@@ -50,9 +50,8 @@ namespace Maze
             verticalWallTexture = GetImage(VerticalBrickFileName);
             visitedCellImage = GetImage(VisistedIconFileName);
             actorImage = GetImage(ActorIconFileName);
-            endPositionImage = GetImage(EndPositionIconFileName);
-            visitedCellImage = GetImage(VisistedIconFileName);
             hintImage = GetImage(HintIconFileName);
+            endPositionImage = GetImage(EndPositionIconFileName);
         }
 
         /// Returns an image from resources.
@@ -95,11 +94,11 @@ namespace Maze
 
         /// Draws path to go to the flag.
 
-        public void DrawHint(Graphics graphics, List<Cell> move)
+        public void DrawHint(Graphics graphics, List<Cell> hintPath)
         {
-            if (graphics != null && move != null)
+            if (graphics != null && hintPath != null)
             {
-                foreach (Cell cell in move)
+                foreach (Cell cell in hintPath)
                 {
                     DrawHintPath(graphics, cell);
                 }
@@ -240,17 +239,16 @@ namespace Maze
             {
                 Font winDrawFont = new Font("Consolas", 16);
                 SolidBrush winDrawBrush = new SolidBrush(Color.White);
-                PointF winDrawPoint = new PointF(0, EmptyTopSpaceHeight / 2);
+                PointF winDrawPoint = new PointF(0, EmptyTopSpaceHeight / 2 - 10);
                 graphics.DrawString(message, winDrawFont, winDrawBrush, winDrawPoint);
             }
-
         }
 
 
         /// TODO: Move the string display and conditional cannon information outside of the renderer. 
         /// This is a piece of logic that doesn't belong here.
 
-        public static  void DisplayCannonStatus(Graphics graphics, GameComponents.Tank actor)
+        public static void DisplayCannonStatus(Graphics graphics, GameComponents.Tank actor)
         {
 
             Font winDrawFont = new Font("Consolas", 16);
@@ -268,7 +266,8 @@ namespace Maze
                 {
                     if (actor.NumberOfShells > 0)
                     {
-                        graphics.DrawString(actor.NumberOfShells.ToString() + " viên đạn còn lại! ", winDrawFont, winDrawBrush, winDrawPoint);
+                        
+                        graphics.DrawString(actor.ShellsUsed.ToString() + " viên đạn đã sử dụng! ", winDrawFont, winDrawBrush, winDrawPoint);
                     }
                     else
                     {
@@ -283,7 +282,7 @@ namespace Maze
 
             Font winDrawFont = new Font("Consolas", 16);
             SolidBrush winDrawBrush = new SolidBrush(Color.White);
-            PointF winDrawPoint = new PointF(0, 40);
+            PointF winDrawPoint = new PointF(0, 30);
 
             if (graphics != null && actor != null)
             {
@@ -295,6 +294,19 @@ namespace Maze
                 {
                     graphics.DrawString("Bạn không thể sử dụng gợi ý nữa!", winDrawFont, winDrawBrush, winDrawPoint);
                 }
+            }
+        }
+
+        public static void DisplayCostStatus(Graphics graphics, GameComponents.Tank actor)
+        {
+
+            Font winDrawFont = new Font("Consolas", 16);
+            SolidBrush winDrawBrush = new SolidBrush(Color.White);
+            PointF winDrawPoint = new PointF(0, 60);
+
+            if (graphics != null && actor != null)
+            {
+                graphics.DrawString("Số bước đã đi so với vị trí bắt đầu: " + actor.NumberOfSteps.ToString(), winDrawFont, winDrawBrush, winDrawPoint);
             }
         }
     }

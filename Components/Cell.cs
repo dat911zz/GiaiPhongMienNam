@@ -13,7 +13,7 @@ namespace GameComponents
     public class Cell
     {
         private bool leftWallBlocked = true, rightWallBlocked = true, topWallBlocked = true, bottomWallBlocked = true;
-        private int cellRow, cellCol;
+        private int cellRow, cellCol, heuristic, cost, f;
         private bool cellVisisted;
 
 
@@ -26,15 +26,15 @@ namespace GameComponents
                 this.leftWallBlocked = cell.LeftWall;
                 this.RightWall = cell.RightWall;
                 this.TopWall = cell.TopWall;
+                this.BottomWall = cell.BottomWall;
                 this.Row = cell.Row;
                 this.Col = cell.Col;
-                this.BottomWall = cell.BottomWall;
             }
 
         }
 
 
-        /// Creates a cell with the  specified row and column
+        /// Creates a cell with the specified row and column
 
         public Cell(int row, int col)
         {
@@ -106,5 +106,8 @@ namespace GameComponents
             set { cellVisisted = value; }
         }
 
+        public int Heuristic { get => heuristic; set => heuristic = value; }
+        public int Cost { get => cost; set => cost = value; }
+        public int F { get => f; set => f = value; }
     }
 }
