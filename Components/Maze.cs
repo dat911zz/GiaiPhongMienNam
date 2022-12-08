@@ -179,24 +179,32 @@ namespace GameComponents
                 {
                     freePath.Add(maze[hint.Cell.Row - 1, hint.Cell.Col]);
                     freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
+                    freePath.Last().Cost = freePath[freePath.Count() - 2].Cost + 1;
+                    freePath.Last().F = GetF(freePath.Last());
                 }
 
                 else if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.South) && maze[hint.Cell.Row + 1, hint.Cell.Col].Row == goal.Row && maze[hint.Cell.Row + 1, hint.Cell.Col].Col == goal.Col)
                 {
                     freePath.Add(maze[hint.Cell.Row + 1, hint.Cell.Col]);
                     freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
+                    freePath.Last().Cost = freePath[freePath.Count() - 2].Cost + 1;
+                    freePath.Last().F = GetF(freePath.Last());
                 }
 
                 else if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.West) && maze[hint.Cell.Row, hint.Cell.Col - 1].Row == goal.Row && maze[hint.Cell.Row, hint.Cell.Col - 1].Col == goal.Col)
                 {
                     freePath.Add(maze[hint.Cell.Row, hint.Cell.Col - 1]);
                     freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
+                    freePath.Last().Cost = freePath[freePath.Count() - 2].Cost + 1;
+                    freePath.Last().F = GetF(freePath.Last());
                 }
 
                 else if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.East) && maze[hint.Cell.Row, hint.Cell.Col + 1].Row == goal.Row && maze[hint.Cell.Row, hint.Cell.Col + 1].Col == goal.Col)
                 {
                     freePath.Add(maze[hint.Cell.Row, hint.Cell.Col + 1]);
                     freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
+                    freePath.Last().Cost = freePath[freePath.Count() - 2].Cost + 1;
+                    freePath.Last().F = GetF(freePath.Last());
                 }
                 else
                 {
@@ -204,34 +212,38 @@ namespace GameComponents
                     {
                         freePath.Add(maze[hint.Cell.Row - 1, hint.Cell.Col]);
                         freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
-                        //freePath.Last().Cost = freePath[freePath.Count - 2].Cost + 1; 
+                        freePath.Last().Cost = freePath[freePath.Count() - 2].Cost + 1;
+                        freePath.Last().F = GetF(freePath.Last());
                     }
 
                     if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.South) && !freePath.Contains(maze[hint.Cell.Row + 1, hint.Cell.Col]) && maze[hint.Cell.Row + 1, hint.Cell.Col].Visited == false)
                     {
                         freePath.Add(maze[hint.Cell.Row + 1, hint.Cell.Col]);
                         freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
-                        //freePath.Last().Cost = freePath[freePath.Count - 2].Cost + 1;
+                        freePath.Last().Cost = freePath[freePath.Count() - 2].Cost + 1;
+                        freePath.Last().F = GetF(freePath.Last());
                     }
 
                     if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.West) && !freePath.Contains(maze[hint.Cell.Row, hint.Cell.Col - 1]) && maze[hint.Cell.Row, hint.Cell.Col - 1].Visited == false)
                     {
                         freePath.Add(maze[hint.Cell.Row, hint.Cell.Col - 1]);
                         freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
-                        //freePath.Last().Cost = freePath[freePath.Count - 2].Cost + 1;
+                        freePath.Last().Cost = freePath[freePath.Count() - 2].Cost + 1;
+                        freePath.Last().F = GetF(freePath.Last());
                     }
 
                     if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.East) && !freePath.Contains(maze[hint.Cell.Row, hint.Cell.Col + 1]) && maze[hint.Cell.Row, hint.Cell.Col + 1].Visited == false)
                     {
                         freePath.Add(maze[hint.Cell.Row, hint.Cell.Col + 1]);
                         freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
-                        //freePath.Last().Cost = freePath[freePath.Count - 2].Cost + 1;
+                        freePath.Last().Cost = freePath[freePath.Count() - 2].Cost + 1;
+                        freePath.Last().F = GetF(freePath.Last());
                     }
                 }
 
-                freePath = freePath.OrderBy(x => x.Heuristic).ToList();
+                freePath = freePath.OrderBy(x => x.F).ToList();
 
-                //Move hint to Cell which has min Heuristic in freePath but hasn't visited and set visited property of that Cell to true
+                //Move hint to Cell which has min F in freePath but hasn't visited and set visited property of that Cell to true
                 if (freePath.Any(temp => temp.Row == goal.Row && temp.Col == goal.Col))
                 {
                     hint.Cell = freePath.First(temp => temp.Row == goal.Row && temp.Col == goal.Col);
@@ -298,6 +310,74 @@ namespace GameComponents
             }
         }
 
+        public int GetF(Cell cell)
+        {
+            return cell.Heuristic + cell.Cost;
+        }
+
+        public List<Cell> FindMostOptimalPath ()
+        {
+            do
+            {
+                hint.Cell.F = GetF(hint.Cell);
+
+                if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.North) && !freePath.Contains(maze[hint.Cell.Row - 1, hint.Cell.Col]) && maze[hint.Cell.Row - 1, hint.Cell.Col].Visited == false)
+                {
+                    freePath.Add(maze[hint.Cell.Row - 1, hint.Cell.Col]);
+                    freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
+                    freePath.Last().Cost = freePath[freePath.Count() - 2].Cost + 1;
+                    freePath.Last().F = GetF(freePath.Last());
+                }
+
+                if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.South) && !freePath.Contains(maze[hint.Cell.Row + 1, hint.Cell.Col]) && maze[hint.Cell.Row + 1, hint.Cell.Col].Visited == false)
+                {
+                    freePath.Add(maze[hint.Cell.Row + 1, hint.Cell.Col]);
+                    freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
+                    freePath.Last().Cost = freePath[freePath.Count() - 2].Cost + 1;
+                    freePath.Last().F = GetF(freePath.Last());
+                }
+
+                if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.West) && !freePath.Contains(maze[hint.Cell.Row, hint.Cell.Col - 1]) && maze[hint.Cell.Row, hint.Cell.Col - 1].Visited == false)
+                {
+                    freePath.Add(maze[hint.Cell.Row, hint.Cell.Col - 1]);
+                    freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
+                    freePath.Last().Cost = freePath[freePath.Count() - 2].Cost + 1;
+                    freePath.Last().F = GetF(freePath.Last());
+                }
+
+                if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.East) && !freePath.Contains(maze[hint.Cell.Row, hint.Cell.Col + 1]) && maze[hint.Cell.Row, hint.Cell.Col + 1].Visited == false)
+                {
+                    freePath.Add(maze[hint.Cell.Row, hint.Cell.Col + 1]);
+                    freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
+                    freePath.Last().Cost = freePath[freePath.Count() - 2].Cost + 1;
+                    freePath.Last().F = GetF(freePath.Last());
+                }
+
+                // Tìm trong FreePath những thằng đã tồn tại trong hintPath và giá trị cost của thằng đó trong freePath nhỏ hơn giá trị cost của thằng đó trong hintPath
+                if (freePath.Any(temp => hintPath.Contains(temp) && temp.Cost < hintPath.Find(x => x == temp).Cost))
+                {
+                    hint.Cell = freePath.Find(temp => hintPath.Contains(temp) && temp.Cost < hintPath.Find(x => x.Col == temp.Col && x.Row == temp.Row).Cost);
+                    hintPath.Find(x => x.Col == hint.Cell.Col && x.Row == hint.Cell.Row).Heuristic = Math.Abs(hint.Cell.Row - goal.Row) + Math.Abs(hint.Cell.Col - goal.Col); ;
+                    hintPath.Find(x => x.Col == hint.Cell.Col && x.Row == hint.Cell.Row).F = GetF(hint.Cell);
+                    continue;
+                }
+
+                freePath = freePath.OrderBy(x => x.F).ToList();
+
+                //Move hint to Cell which has min F in freePath but hasn't visited and set visited property of that Cell to true
+                if (!freePath.All(temp => temp.Visited))
+                {
+                    hintPath.Add(hint.Cell);
+                    hint.Cell = freePath.Find(temp => !hintPath.Contains(temp)); //Tìm trong freePath những thằng chưa có trong hintPath
+                    hint.Cell.Visited = true;
+                    if (hint.Cell.Row == goal.Row && hint.Cell.Col == goal.Col)
+                        break;
+                }
+            } while (!freePath.Any(temp => temp.Row == goal.Row && temp.Col == goal.Col));
+
+            return hintPath;
+        }
+
         // Let the Hint find the way
         public bool SolveMaze()
         {
@@ -306,22 +386,26 @@ namespace GameComponents
             freePath = new List<Cell>();
             freePath.Add(hint.Cell);
             do {    //Keep destroy wall and find (calculate) the path till there's no any free path left
-                foreach (Cell cell in freePath)
-                    cell.Visited = false;
                 
                 freePath = FindPossiblePath(freePath);
 
                 if(!freePath.Any(temp => temp.Row == goal.Row && temp.Col == goal.Col))
                     AutoDestroyWall();
             
+                foreach (Cell cell in freePath)
+                    cell.Visited = false;
             } while (!freePath.Any(temp => temp.Row == goal.Row && temp.Col == goal.Col));
 
 
             hint.Cell = currentPosition;
             hint.Cell.Visited = true;
             hint.Cell.Heuristic = Math.Abs(hint.Cell.Row - goal.Row) + Math.Abs(hint.Cell.Col - goal.Col);
+            hintPath.Add(hint.Cell);
 
-            hintPath = FindPossiblePath(freePath);
+            freePath.Clear();
+            freePath.Add(hint.Cell);
+
+            freePath = FindMostOptimalPath();
 
             hintPath.RemoveAll(x => x.Heuristic > actor.Cell.Heuristic);
             return true;
