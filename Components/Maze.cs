@@ -89,11 +89,12 @@ namespace GameComponents
 
         private void InitializeHintEntity()
         {
-            hint = new Hint(MoveHistory.Last());
+            hint = new Hint(actor.Cell);
             hintPath = new List<Cell>();
             hintPath.Add(hint.Cell);
             hint.Cell.Visited = true;
             hint.Cell.Heuristic = Math.Abs(hint.Cell.Row - goal.Row) + Math.Abs(hint.Cell.Col - goal.Col);
+            hint.Cell.Cost = 0;
         }
 
         /// Directs the cannon in one of the enumerated directions of the maze. Used to prime the cannon before shooting a wall.
@@ -152,8 +153,6 @@ namespace GameComponents
 
         public bool HintThePath()
         {
-            //Xử lý thuật toán ở đây theo các bước:
-            //1. Nhận biết vị trí hiện tại
             if (actor.NumberOfHints > 0)
             {
                 InitializeHintEntity();
@@ -176,28 +175,58 @@ namespace GameComponents
 
             do {
                 //Check possible direction and add to OpenCells List
-                if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.North) && !freePath.Contains(maze[hint.Cell.Row - 1, hint.Cell.Col]) && maze[hint.Cell.Row - 1, hint.Cell.Col].Visited == false)
+                if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.North) && maze[hint.Cell.Row - 1, hint.Cell.Col].Row == goal.Row && maze[hint.Cell.Row - 1, hint.Cell.Col].Col == goal.Col)
                 {
                     freePath.Add(maze[hint.Cell.Row - 1, hint.Cell.Col]);
                     freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
                 }
 
-                if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.South) && !freePath.Contains(maze[hint.Cell.Row + 1, hint.Cell.Col]) && maze[hint.Cell.Row + 1, hint.Cell.Col].Visited == false)
+                else if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.South) && maze[hint.Cell.Row + 1, hint.Cell.Col].Row == goal.Row && maze[hint.Cell.Row + 1, hint.Cell.Col].Col == goal.Col)
                 {
                     freePath.Add(maze[hint.Cell.Row + 1, hint.Cell.Col]);
                     freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
                 }
 
-                if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.West) && !freePath.Contains(maze[hint.Cell.Row, hint.Cell.Col - 1]) && maze[hint.Cell.Row, hint.Cell.Col - 1].Visited == false)
+                else if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.West) && maze[hint.Cell.Row, hint.Cell.Col - 1].Row == goal.Row && maze[hint.Cell.Row, hint.Cell.Col - 1].Col == goal.Col)
                 {
                     freePath.Add(maze[hint.Cell.Row, hint.Cell.Col - 1]);
                     freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
                 }
 
-                if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.East) && !freePath.Contains(maze[hint.Cell.Row, hint.Cell.Col + 1]) && maze[hint.Cell.Row, hint.Cell.Col + 1].Visited == false)
+                else if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.East) && maze[hint.Cell.Row, hint.Cell.Col + 1].Row == goal.Row && maze[hint.Cell.Row, hint.Cell.Col + 1].Col == goal.Col)
                 {
                     freePath.Add(maze[hint.Cell.Row, hint.Cell.Col + 1]);
                     freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
+                }
+                else
+                {
+                    if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.North) && !freePath.Contains(maze[hint.Cell.Row - 1, hint.Cell.Col]) && maze[hint.Cell.Row - 1, hint.Cell.Col].Visited == false)
+                    {
+                        freePath.Add(maze[hint.Cell.Row - 1, hint.Cell.Col]);
+                        freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
+                        //freePath.Last().Cost = freePath[freePath.Count - 2].Cost + 1; 
+                    }
+
+                    if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.South) && !freePath.Contains(maze[hint.Cell.Row + 1, hint.Cell.Col]) && maze[hint.Cell.Row + 1, hint.Cell.Col].Visited == false)
+                    {
+                        freePath.Add(maze[hint.Cell.Row + 1, hint.Cell.Col]);
+                        freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
+                        //freePath.Last().Cost = freePath[freePath.Count - 2].Cost + 1;
+                    }
+
+                    if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.West) && !freePath.Contains(maze[hint.Cell.Row, hint.Cell.Col - 1]) && maze[hint.Cell.Row, hint.Cell.Col - 1].Visited == false)
+                    {
+                        freePath.Add(maze[hint.Cell.Row, hint.Cell.Col - 1]);
+                        freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
+                        //freePath.Last().Cost = freePath[freePath.Count - 2].Cost + 1;
+                    }
+
+                    if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.East) && !freePath.Contains(maze[hint.Cell.Row, hint.Cell.Col + 1]) && maze[hint.Cell.Row, hint.Cell.Col + 1].Visited == false)
+                    {
+                        freePath.Add(maze[hint.Cell.Row, hint.Cell.Col + 1]);
+                        freePath.Last().Heuristic = Math.Abs(freePath.Last().Row - goal.Row) + Math.Abs(freePath.Last().Col - goal.Col);
+                        //freePath.Last().Cost = freePath[freePath.Count - 2].Cost + 1;
+                    }
                 }
 
                 freePath = freePath.OrderBy(x => x.Heuristic).ToList();
@@ -266,63 +295,7 @@ namespace GameComponents
                 CannonPrimedEventHandler();
                 DestroyWall(hint.Cell, hint.ShotDirection);
                 hint.ShotDirection = Direction.None;
-                actor.NumberOfShells--;
-                actor.ShellsUsed++;
             }
-        }
-
-        //Find shortest path using A* Algorithm
-        public List<Cell> FindShortestPath()
-        {
-            while (!(hint.Cell.Row == goal.Row && hint.Cell.Col == goal.Col))
-            {
-                //Move to the goal
-                //North
-                hint.Cell.Heuristic = Math.Abs(hint.Cell.Row - goal.Row) + Math.Abs(hint.Cell.Col - goal.Col);
-                if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.North) && maze[hint.Cell.Row - 1, hint.Cell.Col].Heuristic < hint.Cell.Heuristic && hint.LastDirectionMoved != Direction.South)
-                {
-                   MoveHint(Direction.North);
-                }
-                //East
-                else if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.East) && maze[hint.Cell.Row, hint.Cell.Col + 1].Heuristic < hint.Cell.Heuristic && hint.LastDirectionMoved != Direction.West)
-                {
-                    MoveHint(Direction.East);
-                }
-                //South
-                else if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.South) && maze[hint.Cell.Row + 1, hint.Cell.Col].Heuristic < hint.Cell.Heuristic && hint.LastDirectionMoved != Direction.North)
-                {
-                    MoveHint(Direction.South);
-                }
-                //West
-                else if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.West) && maze[hint.Cell.Row, hint.Cell.Col - 1].Heuristic < hint.Cell.Heuristic && hint.LastDirectionMoved != Direction.East)
-                {
-                    MoveHint(Direction.West);
-                }
-                else
-                {
-                    if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.North) && maze[hint.Cell.Row - 1, hint.Cell.Col].Visited == false)
-                    {
-                        MoveHint(Direction.North);
-                    }
-                    //East
-                    else if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.East) && maze[hint.Cell.Row, hint.Cell.Col + 1].Visited == false)
-                    {
-                        MoveHint(Direction.East);
-                    }
-                    //South
-                    else if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.South) && maze[hint.Cell.Row + 1, hint.Cell.Col].Visited == false)
-                    {
-                        MoveHint(Direction.South);
-                    }
-                    //West
-                    else if (IsPathFree(hint.Cell.Row, hint.Cell.Col, Direction.West) && maze[hint.Cell.Row, hint.Cell.Col - 1].Visited == false)
-                    {
-                        MoveHint(Direction.West);
-                    }
-                }
-            }
-
-            return hintPath;
         }
 
         // Let the Hint find the way
@@ -331,23 +304,26 @@ namespace GameComponents
             //Save current state
             Cell currentPosition = new Cell(hint.Cell);
             freePath = new List<Cell>();
-
-
+            freePath.Add(hint.Cell);
             do {    //Keep destroy wall and find (calculate) the path till there's no any free path left
-                freePath = FindPossiblePath(freePath);
+                foreach (Cell cell in freePath)
+                    cell.Visited = false;
                 
+                freePath = FindPossiblePath(freePath);
+
                 if(!freePath.Any(temp => temp.Row == goal.Row && temp.Col == goal.Col))
                     AutoDestroyWall();
-
+            
             } while (!freePath.Any(temp => temp.Row == goal.Row && temp.Col == goal.Col));
 
-            foreach (Cell cell in freePath)
-                cell.Visited = false;
 
             hint.Cell = currentPosition;
+            hint.Cell.Visited = true;
+            hint.Cell.Heuristic = Math.Abs(hint.Cell.Row - goal.Row) + Math.Abs(hint.Cell.Col - goal.Col);
 
             hintPath = FindPossiblePath(freePath);
 
+            hintPath.RemoveAll(x => x.Heuristic > actor.Cell.Heuristic);
             return true;
         }
 
@@ -449,9 +425,10 @@ namespace GameComponents
                 {
                     int firstTempPosition = moveHistory.IndexOf(moveHistory.First(number => number == actor.Cell));
                     int lastPosition = moveHistory.Count - moveHistory.IndexOf(moveHistory.Last(number => number == actor.Cell));
+                    actor.NumberOfSteps -= 1;
                     moveHistory.RemoveRange(firstTempPosition, lastPosition);
                     moveHistory.Add(actor.Cell);
-                    actor.NumberOfSteps -= 1;
+
                 }
 
 
