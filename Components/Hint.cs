@@ -10,12 +10,9 @@ namespace GameComponents
     {
         private int numberOfShells = 200;
         private int numberOfHints = 1;
-        private int numberOfSteps = 0;
         private Maze.Direction shotDirection;
 
-
         /// Creates an actor object which will have a certain cell within a grid.
-
         public Hint(Cell position)
         {
             shotDirection = Maze.Direction.None;
@@ -23,7 +20,6 @@ namespace GameComponents
         }
 
         /// The number of shells the tank  remaining.
-
         public int NumberOfShells
         {
             get { return numberOfShells; }
@@ -31,7 +27,6 @@ namespace GameComponents
         }
 
         /// The direction in which the cannon is aimed.
-
         public Maze.Direction ShotDirection
         {
             get { return shotDirection; }
@@ -43,6 +38,5 @@ namespace GameComponents
             get => numberOfHints;
             set => numberOfHints = value;
         }
-        public int NumberOfSteps { get => numberOfSteps; set => numberOfSteps = value; }
     }
 }

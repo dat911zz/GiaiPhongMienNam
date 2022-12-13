@@ -93,7 +93,6 @@ namespace Maze
         }
 
         /// Draws path to go to the flag.
-
         public void DrawHint(Graphics graphics, List<Cell> hintPath)
         {
             if (graphics != null && hintPath != null)
@@ -146,7 +145,6 @@ namespace Maze
         }
 
         /// Displays the image used to indicate a visited location on the form.
-
         private void DrawHintPath(Graphics graphics, Cell cell)
         {
             int visistedXCoordinate = cell.Col * CellWallWidth + ActorCellPadding;
@@ -279,7 +277,6 @@ namespace Maze
 
         public static void DisplayHintStatus(Graphics graphics, GameComponents.Tank actor)
         {
-
             Font winDrawFont = new Font("Consolas", 16);
             SolidBrush winDrawBrush = new SolidBrush(Color.White);
             PointF winDrawPoint = new PointF(0, 30);
@@ -299,7 +296,6 @@ namespace Maze
 
         public static void DisplayCostStatus(Graphics graphics, GameComponents.Tank actor)
         {
-
             Font winDrawFont = new Font("Consolas", 16);
             SolidBrush winDrawBrush = new SolidBrush(Color.White);
             PointF winDrawPoint = new PointF(0, 60);

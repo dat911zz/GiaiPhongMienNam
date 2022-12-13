@@ -113,6 +113,7 @@ namespace Maze
 
                 case "H":
                     maze.HintThePath();
+                    maze.AimCannon(GameComponents.Maze.Direction.None);
                     break;
             }
 
@@ -133,7 +134,6 @@ namespace Maze
 
 
         /// Event listener for window painting. Fires when changes to the painted area occur.
-
         private void frmGameField_Paint(object sender, PaintEventArgs e)
         {
             renderer.DrawMaze(e.Graphics, maze.GetMaze());

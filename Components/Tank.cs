@@ -15,7 +15,6 @@ namespace GameComponents
         private Maze.Direction shotDirection;
 
         /// Creates an actor object which will have a certain cell within a grid.
-
         public Tank(Cell position)
         {
             shotDirection = Maze.Direction.None;
@@ -23,7 +22,6 @@ namespace GameComponents
         }
 
         /// The number of shells the tank  remaining.
-
         public int NumberOfShells
         {
             get { return numberOfShells; }
@@ -31,7 +29,6 @@ namespace GameComponents
         }
 
         /// The direction in which the cannon is aimed.
-
         public Maze.Direction ShotDirection
         {
             get { return shotDirection; }

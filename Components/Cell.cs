@@ -18,7 +18,6 @@ namespace GameComponents
 
 
         /// Copy contructure.
-
         public Cell (Cell cell)
         {
             if(cell != null)
@@ -35,7 +34,6 @@ namespace GameComponents
 
 
         /// Creates a cell with the specified row and column
-
         public Cell(int row, int col)
         {
             Row = row;
@@ -44,7 +42,6 @@ namespace GameComponents
 
 
         /// The column of the cell.
-
         public int Col
         {
             get { return cellCol; }
@@ -53,7 +50,6 @@ namespace GameComponents
 
 
         /// Returns the row of the cell.
-
         public int Row
         {
             get { return cellRow; }
@@ -62,7 +58,6 @@ namespace GameComponents
 
 
         /// Whether the bottom of the cell is passable or not.
-
         public bool BottomWall
         {
             get { return bottomWallBlocked; }
@@ -71,7 +66,6 @@ namespace GameComponents
 
 
         /// Whether the top of the cell is passable or not.
-
         public bool TopWall
         {
             get { return topWallBlocked; }
@@ -80,7 +74,6 @@ namespace GameComponents
 
 
         /// Whether the right of the cell is passable or not.
-
         public bool RightWall
         {
             get { return rightWallBlocked; }
@@ -89,7 +82,6 @@ namespace GameComponents
 
 
         /// Whether the left of the cell is passable or not.
-
         public bool LeftWall
         {
             get { return leftWallBlocked; }
@@ -99,7 +91,6 @@ namespace GameComponents
 
 
         /// Indicates whether it has been visited
-
         public bool Visited
         {
             get { return cellVisisted; }
